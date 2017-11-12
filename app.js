@@ -1,9 +1,9 @@
 /*
 Copyright (C) 2016 Apple Inc. All Rights Reserved.
 See LICENSE.txt for this sample’s licensing information
- 
+
 Abstract:
-Sets up a simple Express HTTP server to host the example page, and handles requesting 
+Sets up a simple Express HTTP server to host the example page, and handles requesting
 the Apple Pay merchant session from Apple's servers.
 */
 
@@ -11,6 +11,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 import request from 'request';
 
 /**
@@ -19,11 +20,12 @@ import request from 'request';
 * with the appropriate merchant identifier and domain
 * See the README for more information.
 */
-const APPLE_PAY_CERTIFICATE_PATH = "./certificates/applePayCert.pem";
-const SSL_CERTIFICATE_PATH = "./certificates/cert.pem";
-const SSL_KEY_PATH = "./certificates/key.pem";
-const MERCHANT_IDENTIFIER = "merchant.com.example";
-const MERCHANT_DOMAIN = "example.com";
+
+const APPLE_PAY_CERTIFICATE_PATH = "./certificates/applePayTLS_sfbayarea_2.pem";
+const SSL_CERTIFICATE_PATH = "./certificates/sfbayarea.crt";
+const SSL_KEY_PATH = "./certificates/sfbayarea_key.pem";
+const MERCHANT_IDENTIFIER = "merchant.club.sfbayarea";
+const MERCHANT_DOMAIN = "sfbayarea.club";
 
 try {
   fs.accessSync(APPLE_PAY_CERTIFICATE_PATH);
@@ -33,8 +35,8 @@ try {
   throw new Error('You must generate your SSL and Apple Pay certificates before running this example.');
 }
 
-const sslKey = fs.readFileSync(SSL_KEY_PATH);
-const sslCert = fs.readFileSync(SSL_CERTIFICATE_PATH);
+const sslKey = fs.readFileSync(SSL_KEY_PATH, 'utf8');
+const sslCert = fs.readFileSync(SSL_CERTIFICATE_PATH, 'utf8');
 const applePayCert = fs.readFileSync(APPLE_PAY_CERTIFICATE_PATH);
 
 /**
@@ -84,7 +86,10 @@ app.post('/getApplePaySession', function (req, res) {
 /**
 * Start serving the app.
 */
+/*
 https.createServer({
 	key: sslKey,
 	cert: sslCert,
-}, app).listen(443);
+}, app).listen(3000);
+*/
+http.createServer(app).listen(3000);
