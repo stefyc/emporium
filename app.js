@@ -22,21 +22,21 @@ import request from 'request';
 */
 
 const APPLE_PAY_CERTIFICATE_PATH = "./certificates/applePayTLS_sfbayarea_2.pem";
-const SSL_CERTIFICATE_PATH = "./certificates/sfbayarea.crt";
-const SSL_KEY_PATH = "./certificates/sfbayarea_key.pem";
+//const SSL_CERTIFICATE_PATH = "./certificates/sfbayarea.crt";
+//const SSL_KEY_PATH = "./certificates/sfbayarea_key.pem";
 const MERCHANT_IDENTIFIER = "merchant.club.sfbayarea";
 const MERCHANT_DOMAIN = "sfbayarea.club";
 
 try {
   fs.accessSync(APPLE_PAY_CERTIFICATE_PATH);
-  fs.accessSync(SSL_CERTIFICATE_PATH);
-  fs.accessSync(SSL_KEY_PATH);
+  //fs.accessSync(SSL_CERTIFICATE_PATH);
+  //fs.accessSync(SSL_KEY_PATH);
 } catch (e) {
   throw new Error('You must generate your SSL and Apple Pay certificates before running this example.');
 }
 
-const sslKey = fs.readFileSync(SSL_KEY_PATH, 'utf8');
-const sslCert = fs.readFileSync(SSL_CERTIFICATE_PATH, 'utf8');
+//const sslKey = fs.readFileSync(SSL_KEY_PATH, 'utf8');
+//const sslCert = fs.readFileSync(SSL_CERTIFICATE_PATH, 'utf8');
 const applePayCert = fs.readFileSync(APPLE_PAY_CERTIFICATE_PATH);
 
 /**
@@ -67,7 +67,11 @@ app.post('/getApplePaySession', function (req, res) {
 		body: {
 			merchantIdentifier: MERCHANT_IDENTIFIER,
 			domainName: MERCHANT_DOMAIN,
-			displayName: 'My Store',
+			// displayName: 'My Store',
+			// Test 1: Unicode
+			// displayName: 'Unicode 日',
+			// Test 2: accent
+			displayName: 'Accent é',
 		},
 		json: true,
 	}

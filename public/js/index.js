@@ -18,8 +18,23 @@ The main client-side JS. Handles displaying the Apple Pay button and requesting 
 document.addEventListener('DOMContentLoaded', () => {
 	if (window.ApplePaySession) {
 		if (ApplePaySession.canMakePayments) {
+			console.log('canMakePayments = TRUE');
 			showApplePayButton();
 		}
+		
+		// Test canMakePaymentsWithActiveCards
+		// var merchantIdentifier = 'merchant.club.sfbayarea'; // validated
+		// var merchantIdentifier_notvalidated = 'helloworld'; // not validated
+		// Case 1: validated domain
+		// var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
+		// promise.then(function (response) {
+		//  	console.log(merchantIdentifier, ' canMakePaymentsWithActiveCard = ', response);
+		// });
+		// Case 2: unvalidated domain
+		// var promise2 = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier_notvalidated);
+		// promise2.then(function (response) {
+		// 	console.log(merchantIdentifier_notvalidated, ' canMakePaymentsWithActiveCard = ', response);
+		// });
 	}
 });
 
@@ -124,10 +139,11 @@ function applePayButtonClicked() {
 	session.onpaymentauthorized = (event) => {
 		// Send payment for processing...
 		const payment = event.payment;
+		console.log(payment);
 
 		// ...return a status and redirect to a confirmation page
 		session.completePayment(ApplePaySession.STATUS_SUCCESS);
-		window.location.href = "/success.html";
+		// window.location.href = "/success.html"; // stay on the same page to see console outputs
 	}
 
 	// All our handlers are setup - start the Apple Pay payment
